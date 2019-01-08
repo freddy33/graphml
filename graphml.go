@@ -2,6 +2,7 @@ package graphml
 
 import (
 	"encoding/xml"
+	"fmt"
 	"io"
 )
 
@@ -68,6 +69,23 @@ func NewKey(kind Kind, id, name, typ string) Key {
 		For:  kind,
 		Name: name, Type: typ,
 	}
+}
+
+// Create a new Data entry with single token value
+func NewData(key string, val interface{}) Data {
+	d := Data{}
+	d.Key = key
+	d.Data = []xml.Token{xml.CharData(fmt.Sprintf("%v", val))}
+	return d
+}
+
+// Creates a new Edge for given id source and target ids
+func NewEdge(id, s, t string) Edge {
+	e := Edge{}
+	e.ID = id
+	e.Source = s
+	e.Target = t
+	return e
 }
 
 // Key is a definition of a custom attribute.
