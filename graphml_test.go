@@ -2,7 +2,6 @@ package graphml
 
 import (
 	"compress/gzip"
-	"encoding/xml"
 	"fmt"
 	"github.com/stretchr/testify/require"
 	"io"
@@ -59,6 +58,12 @@ func TestRoundtrip(t *testing.T) {
 	}
 }
 
+func createEdge(i, s, t int) Edge {
+	e := NewEdge(fmt.Sprintf("e%02d", i), fmt.Sprintf("n%02d", s), fmt.Sprintf("n%02d", t))
+	e.Data = []Data{NewData("w", float32(i+1)/4)}
+	return e
+}
+
 func TestManualDocumentCreation(t *testing.T) {
 	doc := new(Document)
 	doc.Instr.Target = "xml"
@@ -83,10 +88,10 @@ func TestManualDocumentCreation(t *testing.T) {
 		g.Nodes[i] = n
 	}
 	g.Edges = []Edge{
-		NewEdge("e00", "n00", "n01"),
-		NewEdge("e01", "n00", "n04"),
-		NewEdge("e02", "n02", "n03"),
-		NewEdge("e03", "n02", "n05"),
+		createEdge(0, 0, 1),
+		createEdge(1, 0, 4),
+		createEdge(2, 2, 3),
+		createEdge(3, 2, 5),
 	}
 	doc.Graphs = []Graph{g}
 
